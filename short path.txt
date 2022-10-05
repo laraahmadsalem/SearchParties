@@ -1,0 +1,134 @@
+public void shortestPath (String source)
+    {
+        DSAGraphVertex v1 = getVertex(source); //gets vertex we are starting from 
+ 
+        DSAGraphEdge ed = null; //shortest edge
+        DSAQueue vertx = new DSAQueue(); //storing shortest path in this queue
+        DSAQueue edgz = new DSAQueue(); //storing shortest edge in this queue
+
+        for(Object v: vertices)
+        {
+
+            DSAGraphVertex v2 = (DSAGraphVertex) v;  //setting them to false so i can visit all vertices 
+            v2.clearVisited(); 
+        }
+
+        while(getVertex(v1) == false)
+        {
+            
+            setVertex(v1);     // sets curent vertes to visited 
+            DSALinkedList edge = v1.getAdjacentEdges(); //gets the edges adjacent to the source vertex from a linked list 
+
+            Iterator itr = edge.iterator(); //gets an iterator for the linked list of adjacent edges 
+            ed = (DSAGraphEdge) itr.next(); //gets teh first edge 
+
+            while((getEdge(ed) == true))  //makes sure the edge has not been visited 
+            {
+                if(itr.hasNext())    // if there is something in the linked list then make that the new edge 
+                {          
+                    ed = (DSAGraphEdge) itr.next(); 
+                }
+            }
+            
+            DSALinkedList v5 = v1.getAdjacent(); //gets the adjacent vertices for current vertex 
+            Iterator itr2 = v5.iterator(); //creates an iterator for the vertex linked list of adjacent vertices 
+            while(itr2.hasNext())
+            {
+                DSAGraphVertex top = (DSAGraphVertex) itr2.next(); 
+                if((getEdge(ed) == false) &&  (getVertex(top)))  // (issue lies here maybe)  
+                //if current edge not visitied and the vertex in the adjacent linked list is visited then change edge 
+                {   
+                  
+                    top = (DSAGraphVertex) itr2.next(); 
+                    if(itr.hasNext())
+                    {
+                        ed = (DSAGraphEdge) itr.next(); 
+                    }
+                   
+                } 
+
+            }
+ 
+            while(itr.hasNext()) // while the adjacent edges has more items in the linked list 
+            {
+                DSAGraphEdge curr = (DSAGraphEdge) itr.next(); //get current edge 
+                if((ed.getLabel() >  curr.getLabel())) //if edge i have now greater than curr switch edges 
+                {
+                    if(getEdge(curr) == false) //make sure that it hasnt been visited 
+                    {
+                        ed = curr;    //set the new one to current edge 
+                    }                     
+                       
+                }    
+            }
+            
+            setEdge(ed);  //sets edge as visited 
+            
+            vertx.enqueue(v1); //queue vertex that has been visited
+            edgz.enqueue(ed);  //queue edge that has been visited 
+            
+
+            v1 = ed.getSink(); //get sink of current vertex to move on to next vertex of graph 
+            ed = null; //set edge as null for next loop
+            
+        }
+        printpath(vertx,edgz); //prints path when looping done 
+    }
+
+
+//------------------------------------------------------------------------IGNORE THIS PART ITS RIGHT --------------------------------------------------------------------
+
+    public boolean getVertex (DSAGraphVertex ed) // this function is right so just ignore (it gets the vertex and checks whether its been visited in entire linked list 
+    {
+        boolean result = false; 
+        Iterator itr = vertices.iterator(); 
+        while(itr.hasNext())
+        {
+            DSAGraphVertex curr = (DSAGraphVertex) itr.next(); 
+            if((ed.getLabel().equals(curr.getLabel())))
+            {
+               result = curr.getVisited(); 
+            }
+        }
+        return result; 
+    }
+    public void setVertex (DSAGraphVertex ed) //sets the vertex to visited 
+    {      
+        Iterator itr = vertices.iterator(); 
+        while(itr.hasNext())
+        {
+            DSAGraphVertex curr = (DSAGraphVertex) itr.next(); 
+            if((ed.getLabel()).equals(curr.getLabel())) //create an equals method (this is temp) 
+            {
+                curr.setVisited();      
+            }
+        }
+
+    }
+
+    public boolean getEdge (DSAGraphEdge ed) // does exact same as vertices but with edges 
+    {
+        boolean result = false; 
+        Iterator itr = edges.iterator(); 
+        while(itr.hasNext())
+        {
+            DSAGraphEdge curr = (DSAGraphEdge) itr.next(); 
+            if(ed.getLabel() == curr.getLabel())
+            {
+               result = curr.getVisited(); 
+            }
+        }
+        return result; 
+    }
+    public void setEdge (DSAGraphEdge ed) 
+    {
+      
+        Iterator itr = edges.iterator(); 
+        while(itr.hasNext())
+        {
+            DSAGraphEdge curr = (DSAGraphEdge) itr.next(); 
+            if(ed.getLabel() == curr.getLabel()) //create an equals method (this is temp) 
+            {
+                curr.setVisited();      
+            }
+        }

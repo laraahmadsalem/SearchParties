@@ -1,0 +1,3 @@
+Division : Maribyrnong Margin: -1.4242135864109855
+Division : Lalor Margin: -0.07832954204042863
+Division : Holt Margin: 1.5236744568520635
